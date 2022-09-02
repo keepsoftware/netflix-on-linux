@@ -31,6 +31,10 @@ done
 echo -e "\n  Checking requirements..."
 export SUDO_USER=$USER
 if [ `id -u` -eq 0 ]; then echo "    [✔] Run as sudo"; realUser=$SUDO_USER; else echo -e "    [x] Run as sudo\n\nYou should run this script as sudo. Aborting...\n"; exit 1; fi
+
+echo "---- $USER"
+echo "---- $SUDO_USER"
+
 # ↑↑↑ Ref: https://askubuntu.com/a/970898/1147789 ↑↑↑
 which firefox &>/dev/null
 if [ $? -eq 0 ]; then echo "    [✔] Firefox"; else echo -e "    [x] Firefox\n\nFirefox is not installed. Aborting...\n"; exit 1; fi
