@@ -19,19 +19,21 @@ echo -e "    3. Run 'netflixonlinux' profile for a moment to initialize the prof
 echo -e "    4. Copy the 'netflix.desktop' file to the /usr/share/applications directory."
 echo -e "    5. Restart GNOME Shell (equivalent to Alt+F2+'r'+Enter)\n"
 
-while true; do
-  read -p "Do you want to continue with the installation? [y/N]: " proceed
-  case $proceed in
-    [Yy]* ) break;;
-    [Nn]* ) echo "Exiting..."; exit;;
-    * ) echo "Type y or n only."; exit;;
-  esac
-done
+# while true; do
+#   read -p "Do you want to continue with the installation? [y/N]: " proceed
+#   case $proceed in
+#     [Yy]* ) break;;
+#     [Nn]* ) echo "Exiting..."; exit;;
+#     * ) echo "Type y or n only."; exit;;
+#   esac
+# done
 
 echo -e "\n  Checking requirements..."
-export SUDO_USER=$USER
-if [ `id -u` -eq 0 ]; then echo "    [✔] Run as sudo"; realUser=$SUDO_USER; else echo -e "    [x] Run as sudo\n\nYou should run this script as sudo. Aborting...\n"; exit 1; fi
+# export SUDO_USER=$USER
+# if [ `id -u` -eq 0 ]; then echo "    [✔] Run as sudo"; realUser=$SUDO_USER; else echo -e "    [x] Run as sudo\n\nYou should run this script as sudo. Aborting...\n"; exit 1; fi
 
+
+realUser=$SUDO_USER;
 echo "---- $USER"
 echo "---- $SUDO_USER"
 
