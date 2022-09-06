@@ -14,7 +14,6 @@ echo -e "\n  Checking requirements..."
 # export SUDO_USER=$USER
 # if [ `id -u` -eq 0 ]; then echo "    [✔] Run as sudo"; realUser=$SUDO_USER; else echo -e "    [x] Run as sudo\n\nYou should run this script as sudo. Aborting...\n"; exit 1; fi
 
-
 realUser=$USER;
 # ↑↑↑ Ref: https://askubuntu.com/a/970898/1147789 ↑↑↑
 which firefox &>/dev/null
@@ -53,6 +52,7 @@ if [[ -n $gnomePID ]]; then DBUS_ADDR=`cat /proc/$gnomePID/environ | grep -z "^D
 if [ $? -eq 0 ]; then true; else echo -e "  [x] Fail. Could not restart GNOME shell. Please manually restart to see Netflix icon in Applications Menu.\n"; exit 1; fi
 # ↑↑↑ Ref: https://askubuntu.com/a/926695/1147789 ↑↑↑
 # ↑↑↑ Ref: https://unix.stackexchange.com/a/324124/245859 ↑↑↑
+
 sleep 1
 gdbus call --address $DBUS_ADDR --dest org.gnome.Shell --object-path /org/gnome/Shell --method org.gnome.Shell.Eval 'Meta.restart(_("Restarting GNOME Shell…"))' &>/dev/null
 # ↑↑↑ Ref: https://askubuntu.com/a/1258891/1147789 ↑↑↑
