@@ -1,5 +1,6 @@
 #!/bin/bash
 . ~/.config/user-dirs.dirs
+cd /opt/netflix-on-linux/
 clear
 echo -e "\n  Checking requirements..."
 # export SUDO_USER=$USER
