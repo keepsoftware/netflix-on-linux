@@ -1,15 +1,6 @@
 #!/bin/bash
-
+. ~/.config/user-dirs.dirs
 clear
-# while true; do
-#   read -p "Do you want to continue with the installation? [y/N]: " proceed
-#   case $proceed in
-#     [Yy]* ) break;;
-#     [Nn]* ) echo "Exiting..."; exit;;
-#     * ) echo "Type y or n only."; exit;;
-#   esac
-# done
-
 echo -e "\n  Checking requirements..."
 # export SUDO_USER=$USER
 # if [ `id -u` -eq 0 ]; then echo "    [✔] Run as sudo"; realUser=$SUDO_USER; else echo -e "    [x] Run as sudo\n\nYou should run this script as sudo. Aborting...\n"; exit 1; fi
@@ -30,9 +21,9 @@ if [ $? -eq 0 ]; then echo -e "  [✔] Success"; else echo -e "  [x] Fail\n\nAbo
 sleep 0.5
 
 echo -e "  2. Copying the profile properties to the newly created profile..."
-realUserHome=`$HOME`
-profileDir=`ls $realUserHome/.mozilla/firefox/ |grep netflixonlinux`
-cp properties/* $realUserHome/.mozilla/firefox/$profileDir
+realUserHome=`echo $HOME`
+profileDir=`ls ${realUserHome}/.mozilla/firefox/ |grep netflixonlinux`
+cp properties/* ${realUserHome}/.mozilla/firefox/$profileDir
 if [ $? -eq 0 ]; then echo -e "  [✔] Success"; else echo -e "  [x] Fail\n\nAborting...\n"; exit 1; fi
 sleep 0.5
 
@@ -43,20 +34,23 @@ if [ $? -eq 124 ]; then echo -e "  [✔] Success"; else echo -e "  [x] Fail\n\nA
 
 echo -e "  4. Copying the 'netflix.desktop' file to the /usr/share/applications directory..."
 sudo cp netflix.desktop /usr/share/applications
+sudo cp netflix.desktop "$XDG_DESKTOP_DIR/"
+sudo chown $USER "$XDG_DESKTOP_DIR/netflix.desktop"
+sudo chmod +x "$XDG_DESKTOP_DIR/netflix.desktop"
 if [ $? -eq 0 ]; then echo -e "  [✔] Success"; else echo -e "  [x] Fail\n\nAborting...\n"; exit 1; fi
 sleep 0.5
 
-echo -e "  5. Restarting GNOME Shell..."
-gnomePID=`pgrep -o "gnome-session" -u $realUser` # get PID of gnome-session
-if [[ -n $gnomePID ]]; then DBUS_ADDR=`cat /proc/$gnomePID/environ | grep -z "^DBUS_SESSION_BUS_ADDRESS=" | tr '\0' '\n' | sed -e s/DBUS_SESSION_BUS_ADDRESS=//`; else echo -e "  [x] gnome-session could not found, could not restart GNOME shell. Please manually restart to see Netflix icon in Applications Menu.\n"; exit 1; fi
-if [ $? -eq 0 ]; then true; else echo -e "  [x] Fail. Could not restart GNOME shell. Please manually restart to see Netflix icon in Applications Menu.\n"; exit 1; fi
+#echo -e "  5. Restarting GNOME Shell..."
+#gnomePID=`pgrep -o gnome-session -u ${realUser}` # get PID of gnome-session
+#if [[ -n $gnomePID ]]; then DBUS_ADDR=`cat /proc/$gnomePID/environ | grep -z "^DBUS_SESSION_BUS_ADDRESS=" | tr '\0' '\n' | sed -e s/DBUS_SESSION_BUS_ADDRESS=//`; else echo -e "  [x] gnome-session could not found, could not restart GNOME shell. Please manually restart to see Netflix icon in Applications Menu.\n"; exit 1; fi
+#if [ $? -eq 0 ]; then true; else echo -e "  [x] Fail. Could not restart GNOME shell. Please manually restart to see Netflix icon in Applications Menu.\n"; exit 1; fi
 # ↑↑↑ Ref: https://askubuntu.com/a/926695/1147789 ↑↑↑
 # ↑↑↑ Ref: https://unix.stackexchange.com/a/324124/245859 ↑↑↑
 
-sleep 1
-gdbus call --address $DBUS_ADDR --dest org.gnome.Shell --object-path /org/gnome/Shell --method org.gnome.Shell.Eval 'Meta.restart(_("Restarting GNOME Shell…"))' &>/dev/null
+#sleep 1
+#gdbus call --address $DBUS_ADDR --dest org.gnome.Shell --object-path /org/gnome/Shell --method org.gnome.Shell.Eval 'Meta.restart(_("Restarting GNOME Shell…"))' &>/dev/null
 # ↑↑↑ Ref: https://askubuntu.com/a/1258891/1147789 ↑↑↑
-if [ $? -eq 0 ]; then echo -e "  [✔] Success"; else echo -e "  [x] Fail\n\nAborting...\n"; exit 1; fi
+#if [ $? -eq 0 ]; then echo -e "  [✔] Success"; else echo -e "  [x] Fail\n\nAborting...\n"; exit 1; fi
 
 echo -e " ____                   _  "
 echo -e "|  _ \  ___  _ __   ___| | "
